@@ -66,7 +66,7 @@ async def on_ready():
 @client.event
 async def on_command_error(ctx, error):
     # Handle errors
-    # if isinstance(error, commands.CommandInvokeError): await ctx.send(":x: 403 Forbidden ! Missing Permissions")
+    if isinstance(error, commands.CommandInvokeError): await ctx.send(":x: 403 Forbidden ! Missing Permissions")
     if isinstance(error, commands.CommandNotFound): await ctx.send(":x: Command not found")
     else: raise error
 
