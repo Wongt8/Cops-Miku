@@ -6,7 +6,7 @@
 Cops Miku is a Discord bot that is designed to help you manage your server with Miku as a cops.
 
 ## Introduction
-You are bored of stupid link or websit, and you would like to ban some ? You are in the right place. Miku is here to help you.
+You are bored of stupid link or website, and you would like to ban some ? You are in the right place. Miku is here to help you.
 
 
 ## Commands
