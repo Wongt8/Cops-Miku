@@ -1,7 +1,6 @@
 import discord, json, re
 from discord.ext import commands
 
-
 TOKEN = ""
 
 intents = discord.Intents.all()
@@ -32,24 +31,27 @@ except Exception as e:
     BANNED_WEBSITES: list = []
 
 
-def have_a_link(messge: str):
-    # Return True if the message contains a url
-    # Use of regex
-    return True if re.search(r'(https?://\S+)', messge) is not None else False
+def have_a_link(messge: str) -> bool :
+    """
+     Return True if the message contains a url
+    """
+    return re.search(r'(https?://\S+)', messge) is not None
 
 
-def is_url_same_website(url, url_to_compare):
-        # Check if the url is the same website
-        return True if re.search(url, url_to_compare) is not None else False
+def is_url_same_website(website: str, url_to_compare: str) -> bool:
+    """
+    Return True if the url_to_compare come from the same website
+    """
+    return re.search(website, url_to_compare) is not None
 
 
-def add_link_embed(message,reason,author):
+def add_link_embed(message: str, reason: str, author: str) -> discord.Embed :
     embed = discord.Embed(title="New link/website banned", description=f"{message}", color=0xeb4034)
     embed.add_field(name="Reason", value=f"{reason}", inline=False)
     embed.add_field(name="Banned by", value=f"{author}", inline=False)
     return embed
 
-def add_link_embed_unban(message,reason,author):
+def add_link_embed_unban(message,reason,author) -> discord.Embed:
     embed = discord.Embed(title="Link/website unbanned", description=f"{message}", color=0x099e27)
     embed.add_field(name="Reason", value=f"{reason}", inline=False)
     embed.add_field(name="Unbanned by", value=f"{author}", inline=False)
@@ -64,14 +66,13 @@ async def on_ready():
 
 
 @client.event
-async def on_command_error(ctx, error):
-    # Handle errors
+async def on_command_error(ctx: discord.Context, error : Exception):
     if isinstance(error, commands.CommandInvokeError): await ctx.send(":x: 403 Forbidden ! Missing Permissions")
     if isinstance(error, commands.CommandNotFound): await ctx.send(":x: Command not found")
     else: raise error
 
 @client.command(aliases=["banL"])
-async def add_banned_link(ctx, link, *reason):
+async def add_banned_link(ctx: discord.Context, link :str, *reason: tuple):
 
     # Check if the user of the command have admin permissions
     if ctx.message.author.guild_permissions.administrator:
@@ -98,7 +99,7 @@ async def add_banned_link(ctx, link, *reason):
 
 
 @client.command(aliases=["unbanL"])
-async def remove_banned_link(ctx, link):
+async def remove_banned_link(ctx: discord.Context, link: str):
     
     # Check if the user of the command have admin permissions
     if ctx.message.author.guild_permissions.administrator:
@@ -118,7 +119,7 @@ async def remove_banned_link(ctx, link):
         await ctx.send(":x: 403 Forbidden ! Missing Permissions")
 
 @client.command(aliases=["banW"])
-async def add_banned_website(ctx, url, *reason):
+async def add_banned_website(ctx: discord.Context, url: str, *reason: tuple):
     
     # Check if the user of the command have admin permissions
     if ctx.message.author.guild_permissions.administrator:
@@ -144,7 +145,7 @@ async def add_banned_website(ctx, url, *reason):
         await ctx.send(":x: 403 Forbidden ! Missing Permissions")
 
 @client.command(aliases=["unbanW"])
-async def remove_banned_website(ctx, url):
+async def remove_banned_website(ctx: discord.Context, url: str):
         
     # Check if the user of the command have admin permissions
     if ctx.message.author.guild_permissions.administrator:
@@ -177,7 +178,7 @@ async def help_command(ctx):
     await ctx.send(embed=embed)
 
 @client.event
-async def on_message(message):
+async def on_message(message: discord.Message):
 
     # This make the command work
     await client.process_commands(message)
